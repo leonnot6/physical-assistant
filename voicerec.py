@@ -1,5 +1,6 @@
 import os
 import time
+import pocketsphinx
 import speech_recognition as sr
 
 # Command function
