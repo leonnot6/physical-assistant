@@ -5,7 +5,7 @@ import speech_recognition as sr
 # Replace these with your actual values
 SPOTIPY_CLIENT_ID = '32fa50f4c0154802af23c5af0c5e2a90'
 SPOTIPY_CLIENT_SECRET = 'cacce2027b3149b59f4fc3f7313b66d9'
-SPOTIPY_REDIRECT_URI = 'http://localhost:8888/callback'
+SPOTIPY_REDIRECT_URI = 'https://127.0.0.1:8888/callback'
 
 # Set up Spotify authorization
 scope = "user-read-playback-state,user-modify-playback-state"
