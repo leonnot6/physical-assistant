@@ -35,7 +35,7 @@ try:
         title = song_name
         artist = ""
 
-    results = sp.search(q=f"track:{song_name}", type='track', limit=5)
+    results = sp.search(q=f"track:{title} artist:{artist}", type='track', limit=10)
 
     if results['tracks']['items']:
         track = results['tracks']['items'][0]
