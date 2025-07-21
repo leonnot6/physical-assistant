@@ -29,7 +29,13 @@ try:
     song_name = recognizer.recognize_google(audio)
     print(f"🔍 You said: {song_name}")
 
-    results = sp.search(q=song_name, type='track', limit=1)
+    if " by " in song_name.lower():
+        title, artist = song_name.lower().split(" by ")
+    else:
+        title = song_name
+        artist = ""
+
+    results = sp.search(q=f"track:{song_name}", type='track', limit=5)
 
     if results['tracks']['items']:
         track = results['tracks']['items'][0]
