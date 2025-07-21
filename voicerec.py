@@ -32,7 +32,7 @@ with mic as source:
     while True:
         try:
             audio = recognizer.listen(source)
-            command = recognizer.recognize_sphinx(audio)
+            command = recognizer.recognize_google(audio)
             print(f"You said: {command}")
             handle_command(command)
         except sr.UnknownValueError:
