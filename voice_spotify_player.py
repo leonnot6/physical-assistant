@@ -33,19 +33,19 @@ try:
     
     if "pause" in command:
         sp.pause_playback()
-        print("⏸️ Paused playback.")
+        print("Paused playback.")
 
     elif "resume" in command or "continue" in command or "play music" in command:
         sp.start_playback()
-        print("▶️ Resumed playback.")
+        print("Resumed playback.")
 
     elif "skip" in command or "next" in command:
         sp.next_track()
-        print("⏭️ Skipped to next track.")
+        print("Skipped to next track.")
 
     elif "go back" in command or "previous" in command or "back" in command:
         sp.previous_track()
-        print("⏮️ Went to previous track.")
+        print("Went to previous track.")
 
     elif "play" in command:
         # Try to extract "play [song] by [artist]"
@@ -57,7 +57,7 @@ try:
             title = song_part
             artist = ""
 
-        print(f"🎵 Searching for: '{title}' by '{artist or 'any artist'}'")
+        print(f"Searching for: '{title}' by '{artist or 'any artist'}'")
         query = f"track:{title} artist:{artist}" if artist else f"track:{title}"
 
     # Search for tracks
