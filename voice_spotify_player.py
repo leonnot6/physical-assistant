@@ -20,55 +20,73 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
 recognizer = sr.Recognizer()
 
 with sr.Microphone(sample_rate=16000) as source:
-    print("Say the song name ")
+    print("Say a command like 'Play [song]', 'Pause', 'Resume', 'Skip', or 'Go back':")
     recognizer.adjust_for_ambient_noise(source)
     audio = recognizer.listen(source)
 
 try:
     spoken = recognizer.recognize_google(audio)
+    command = spoken.lower().strip()
     print(f"You said: {spoken}")
 
     # Extract song title and artist (if present)
-    spoken_lower = spoken.lower()
-    if " by " in spoken_lower:
-        title, artist = map(str.strip, spoken_lower.split(" by ", 1))
-    else:
-        title = spoken_lower.strip()
-        artist = ""
+    
+    if "pause" in command:
+        sp.pause_playback()
+        print("⏸️ Paused playback.")
 
-    print(f"Searching for: '{title}' by '{artist or 'any artist'}'")
+    elif "resume" in command or "continue" in command or "play music" in command:
+        sp.start_playback()
+        print("▶️ Resumed playback.")
 
-    # Build search query
-    if artist:
-        query = f"track:{title} artist:{artist}"
-    else:
-        query = f"track:{title}"
+    elif "skip" in command or "next" in command:
+        sp.next_track()
+        print("⏭️ Skipped to next track.")
+
+    elif "go back" in command or "previous" in command or "back" in command:
+        sp.previous_track()
+        print("⏮️ Went to previous track.")
+
+    elif "play" in command:
+        # Try to extract "play [song] by [artist]"
+        song_part = command.replace("play", "", 1).strip()
+
+        if " by " in song_part:
+            title, artist = map(str.strip, song_part.split(" by ", 1))
+        else:
+            title = song_part
+            artist = ""
+
+        print(f"🎵 Searching for: '{title}' by '{artist or 'any artist'}'")
+        query = f"track:{title} artist:{artist}" if artist else f"track:{title}"
 
     # Search for tracks
-    results = sp.search(q=query, type='track', limit=10)
+        results = sp.search(q=query, type='track', limit=10)
 
-    # Try to match exact artist if specified
-    track = None
-    if artist:
-        for item in results['tracks']['items']:
-            result_artists = [a['name'].lower() for a in item['artists']]
-            if artist.lower() in result_artists:
-                track = item
-                break
+        # Try to match exact artist if specified
+        track = None
+        if artist:
+            for item in results['tracks']['items']:
+                result_artists = [a['name'].lower() for a in item['artists']]
+                if artist.lower() in result_artists:
+                    track = item
+                    break
 
-    # If no artist match or no artist provided, use top result
-    if not track and results['tracks']['items']:
-        track = results['tracks']['items'][0]
+        # If no artist match or no artist provided, use top result
+        if not track and results['tracks']['items']:
+            track = results['tracks']['items'][0]
 
-    # Play the track
-    if track:
-        track_uri = track['uri']
-        track_name = track['name']
-        artist_name = track['artists'][0]['name']
-        print(f"Now playing: {track_name} by {artist_name}")
-        sp.start_playback(uris=[track_uri])
+        # Play the track
+        if track:
+            track_uri = track['uri']
+            track_name = track['name']
+            artist_name = track['artists'][0]['name']
+            print(f"Now playing: {track_name} by {artist_name}")
+            sp.start_playback(uris=[track_uri])
+        else:
+            print("No matching track found on Spotify.")
     else:
-        print("No matching track found on Spotify.")
+        print("Command not recognized.")
 
 except sr.UnknownValueError:
     print("Could not understand the audio.")
