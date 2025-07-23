@@ -49,7 +49,7 @@ def main():
             result = porcupine.process(pcm_unpacked)
 
             if result >= 0:
-            print("Wake word detected! Pausing music...")
+                print("Wake word detected! Pausing music...")
     try:
         sp.pause_playback()
     except SpotifyException as e:
