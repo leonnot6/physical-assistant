@@ -1,7 +1,24 @@
 import pvporcupine
 import pyaudio
 import struct
-import subprocess
+import subprocessimport spotipy
+from spotipy.oauth2 import SpotifyOAuth
+
+import psutil
+
+def is_assistant_running(script_name):
+    for proc in psutil.process_iter(['pid', 'name', 'cmdline']):
+        if script_name in proc.info['cmdline']:
+            return True
+    return False
+
+# Set up Spotipy with your credentials
+sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
+    redirect_uri="http://localhost:8888/callback",
+    scope="user-modify-playback-state user-read-playback-state"
+))
 
 ACCESS_KEY = "by5UgBvBtiuXU/4OFLSAsQV58EN2mApZU8820RWDwgrIX7XEB+hu/g=="  # Replace with your key
 WAKE_WORD_PATH = "Hey-Bee-Mow_en_raspberry-pi_v3_0_0.ppn"       # Custom wake word file
@@ -31,9 +48,11 @@ def main():
             result = porcupine.process(pcm_unpacked)
 
             if result >= 0:
-                print("Wake word detected! Launching music assistant...")
-                subprocess.Popen(["python3", ASSISTANT_SCRIPT])
+                print("Wake word detected! Pausing music...")
                 sp.pause_playback()
+        if not is_assistant_running(ASSISTANT_SCRIPT):
+                subprocess.Popen(["python3", ASSISTANT_SCRIPT])
+
     except KeyboardInterrupt:
         print("Exiting...")
     finally:
