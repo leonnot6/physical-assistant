@@ -49,10 +49,15 @@ def main():
             result = porcupine.process(pcm_unpacked)
 
             if result >= 0:
-                print("Wake word detected! Pausing music...")
-                sp.pause_playback()
-        if not is_assistant_running(ASSISTANT_SCRIPT):
-                subprocess.Popen(["python3", ASSISTANT_SCRIPT])
+    print("Wake word detected! Pausing music...")
+    try:
+        sp.pause_playback()
+    except SpotifyException as e:
+        print(f"Spotify error: {e}")
+    if not is_assistant_running(ASSISTANT_SCRIPT):
+        subprocess.Popen(["python3", ASSISTANT_SCRIPT])
+    time.sleep(2)
+
 
     except KeyboardInterrupt:
         print("Exiting...")
