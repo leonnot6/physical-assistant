@@ -33,6 +33,7 @@ def main():
             if result >= 0:
                 print("Wake word detected! Launching music assistant...")
                 subprocess.Popen(["python3", ASSISTANT_SCRIPT])
+                sp.pause
     except KeyboardInterrupt:
         print("Exiting...")
     finally:
