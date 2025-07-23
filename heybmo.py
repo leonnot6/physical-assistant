@@ -1,7 +1,8 @@
 import pvporcupine
 import pyaudio
 import struct
-import subprocessimport spotipy
+import subprocess
+import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 
 import psutil
