@@ -94,7 +94,7 @@ try:
             speak("That song exisits boy.")
             print("That song exisits boy.")
     else:
-        speak(you are muted chat. Cant hear you")
+        speak("you are muted chat. Cant hear you")
         print("you are muted chat. Cant hear you")
 
 except sr.UnknownValueError:
