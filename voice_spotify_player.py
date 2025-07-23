@@ -1,7 +1,14 @@
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import speech_recognition as sr
+import pyttsx3
 
+engine = pyttsx3.init()
+engine.setProperty('rate', 180)  # slower speech
+
+def speak(text):
+    engine.say(text)
+    engine.runAndWait()
 # Replace these with your credentials
 SPOTIPY_CLIENT_ID = '32fa50f4c0154802af23c5af0c5e2a90'
 SPOTIPY_CLIENT_SECRET = 'cacce2027b3149b59f4fc3f7313b66d9'
@@ -81,16 +88,21 @@ try:
             track_uri = track['uri']
             track_name = track['name']
             artist_name = track['artists'][0]['name']
-            print(f"Now playing: {track_name} by {artist_name}")
+            speak(f"Now playing: {track_name} by {artist_name}")
             sp.start_playback(uris=[track_uri])
         else:
-            print("No matching track found on Spotify.")
+            speak("That song exisits boy.")
+            print("That song exisits boy.")
     else:
-        print("Command not recognized.")
+        speak("you are muted chat. Cant hear you")
+        print("you are muted chat. Cant hear you")
 
 except sr.UnknownValueError:
+    speak("Could not understand the audio.")
     print("Could not understand the audio.")
 except sr.RequestError as e:
+    speak(f"Google STT error: {e}")
     print(f"Google STT error: {e}")
 except spotipy.exceptions.SpotifyException as e:
+    speak(f"Spotify API error: {e}")
     print(f"Spotify API error: {e}")
