@@ -2,6 +2,9 @@ import pvporcupine
 import pyaudio
 import struct
 import subprocess
+import spotipy
+from spotipy.oauth2 import SpotifyOAuth
+import speech_recognition as sr
 
 ACCESS_KEY = "by5UgBvBtiuXU/4OFLSAsQV58EN2mApZU8820RWDwgrIX7XEB+hu/g=="  # Replace with your key
 WAKE_WORD_PATH = "Hey-Bee-Mow_en_raspberry-pi_v3_0_0.ppn"       # Custom wake word file
